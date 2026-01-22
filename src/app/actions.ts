@@ -1,0 +1,35 @@
+'use server';
+
+import { generateScreenplayScene, GenerateScreenplaySceneInput } from '@/ai/flows/generate-screenplay-scene';
+import { regenerateScene, RegenerateSceneInput } from '@/ai/flows/regenerate-scene';
+import { continuityAwareDialogueImprovement, ContinuityAwareDialogueImprovementInput } from '@/ai/flows/continuity-aware-dialogue-improvement';
+
+export async function generateSceneAction(input: GenerateScreenplaySceneInput) {
+    try {
+        const result = await generateScreenplayScene(input);
+        return { success: true, data: result };
+    } catch (error) {
+        console.error('Error in generateSceneAction:', error);
+        return { success: false, error: 'Failed to generate scene.' };
+    }
+}
+
+export async function regenerateSceneAction(input: RegenerateSceneInput) {
+    try {
+        const result = await regenerateScene(input);
+        return { success: true, data: result };
+    } catch (error) {
+        console.error('Error in regenerateSceneAction:', error);
+        return { success: false, error: 'Failed to regenerate scene.' };
+    }
+}
+
+export async function improveDialogueAction(input: ContinuityAwareDialogueImprovementInput) {
+    try {
+        const result = await continuityAwareDialogueImprovement(input);
+        return { success: true, data: result };
+    } catch (error) {
+        console.error('Error in improveDialogueAction:', error);
+        return { success: false, error: 'Failed to improve dialogue.' };
+    }
+}

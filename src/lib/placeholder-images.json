@@ -1,3 +1,28 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-image",
+      "description": "A vintage typewriter on a wooden desk, symbolizing writing and storytelling.",
+      "imageUrl": "https://images.unsplash.com/photo-1618393677158-d374ee3a5ba9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx0eXBld3JpdGVyJTIwZGVza3xlbnwwfHx8fDE3NjkwMTIwMTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "typewriter desk"
+    },
+    {
+      "id": "feature-generate",
+      "description": "Abstract representation of AI neural networks.",
+      "imageUrl": "https://images.unsplash.com/photo-1644088379091-d574269d422f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMG5ldHdvcmt8ZW58MHx8fHwxNzY5MDcxMTAxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract network"
+    },
+    {
+      "id": "feature-edit",
+      "description": "A close-up of a screenplay with annotations.",
+      "imageUrl": "https://images.unsplash.com/photo-1744850627871-fb4584cb1882?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzY3JlZW5wbGF5JTIwZWRpdHxlbnwwfHx8fDE3NjkxMDAxNjF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "screenplay edit"
+    },
+    {
+      "id": "feature-export",
+      "description": "A stack of printed papers ready for distribution.",
+      "imageUrl": "https://images.unsplash.com/photo-1654372066379-d8a1c70f7363?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cHJpbnRlZCUyMHBhcGVyfGVufDB8fHx8MTc2OTEwMDE2MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "printed paper"
+    }
+  ]
 }
