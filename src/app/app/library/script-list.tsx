@@ -35,6 +35,7 @@ import type { Script } from '@/lib/types';
 import { getScripts, deleteScript } from '@/lib/storage';
 import { exportScriptToPDF } from '@/lib/pdf';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 export function ScriptList() {
   const [scripts, setScripts] = useState<Script[]>([]);

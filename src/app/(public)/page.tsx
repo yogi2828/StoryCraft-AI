@@ -45,10 +45,10 @@ export default function LandingPage() {
            )}
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
           <div className="container relative px-4 md:px-6 text-center space-y-6">
-            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-white drop-shadow-lg">
+            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-foreground drop-shadow-lg">
               From Idea to Screenplay — Instantly.
             </h1>
-            <p className="mx-auto max-w-[700px] text-lg text-gray-300 md:text-xl drop-shadow-md">
+            <p className="mx-auto max-w-[700px] text-lg text-muted-foreground md:text-xl drop-shadow-md">
               StorySynth is an AI-powered platform that helps you create, manage, and export movie scripts with ease.
               Unleash your creativity without getting bogged down by formatting.
             </p>
@@ -63,7 +63,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-card">
+        <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-background">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -74,15 +74,17 @@ export default function LandingPage() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-1 md:grid-cols-3 md:gap-12 lg:max-w-none lg:grid-cols-3 lg:gap-16 mt-12">
+            <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-1 md:grid-cols-3 lg:max-w-none lg:grid-cols-3 mt-12">
               {features.map((feature, index) => (
-                <div key={index} className="flex flex-col items-center text-center gap-4">
-                  {feature.icon}
-                  <div className="grid gap-1">
-                    <h3 className="text-lg font-bold">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground">{feature.description}</p>
-                  </div>
-                </div>
+                <Card key={index} className="flex flex-col text-center items-center p-6 bg-card border hover:border-primary/50 hover:shadow-lg transition-all transform hover:-translate-y-1">
+                    <CardHeader className="p-0 items-center">
+                        {feature.icon}
+                        <CardTitle className="mt-4">{feature.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-0 mt-2">
+                        <p className="text-muted-foreground">{feature.description}</p>
+                    </CardContent>
+                </Card>
               ))}
             </div>
           </div>
