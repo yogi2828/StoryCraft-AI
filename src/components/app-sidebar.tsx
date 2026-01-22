@@ -9,7 +9,6 @@ import {
   Settings,
   User as UserIcon,
   LogOut,
-  Clapperboard,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -33,6 +32,7 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { Button } from './ui/button';
+import { ThemeToggle } from './theme-toggle';
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -48,7 +48,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" side="left" variant="sidebar">
       <SidebarHeader>
         <Link href="/app/dashboard" className="flex items-center gap-2.5" prefetch={false}>
-          <Clapperboard className="w-7 h-7 text-primary" />
+          <Logo className="w-7 h-7 text-primary" />
           <span className="font-headline text-lg font-bold">StorySynth</span>
         </Link>
       </SidebarHeader>
@@ -71,6 +71,9 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
+        <div className="flex justify-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=expanded]:justify-end p-2">
+            <ThemeToggle />
+        </div>
         <SidebarSeparator />
          <DropdownMenu>
           <DropdownMenuTrigger asChild>
