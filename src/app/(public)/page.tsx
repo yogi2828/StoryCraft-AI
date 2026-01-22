@@ -33,23 +33,23 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
-        <section className="relative w-full py-32 md:py-40 lg:py-48 flex items-center justify-center text-center overflow-hidden">
-          <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,hsl(var(--foreground)/0.05)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.05)_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-          <div className="absolute inset-0 -z-20 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 animate-gradient-xy" />
+        <section className="relative w-full pt-32 pb-20 md:pt-48 md:pb-32 lg:pt-56 lg:pb-40 flex items-center justify-center text-center overflow-hidden">
+          <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,hsl(var(--foreground)/0.02)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.02)_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+          <div className="absolute inset-0 -z-20 bg-gradient-to-br from-indigo-500/10 via-amber-500/5 to-fuchsia-500/10 animate-gradient-xy" />
           <div className="absolute bottom-0 left-0 -z-10 h-48 w-full bg-gradient-to-t from-background via-background/80 to-transparent" />
           
           <div className="container relative px-4 md:px-6 space-y-8 animate-fade-in-up">
-            <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl text-foreground drop-shadow-2xl">
+            <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent drop-shadow-sm">
               From Idea to Screenplay.
               <br/>
-              <span className="text-accent">Instantly.</span>
+              <span className="bg-gradient-to-r from-amber-500 to-fuchsia-500 bg-clip-text text-transparent">Instantly.</span>
             </h1>
             <p className="mx-auto max-w-[700px] text-lg text-muted-foreground md:text-xl drop-shadow-lg">
               StorySynth is an AI-powered platform that helps you create, manage, and export movie scripts with ease.
               Unleash your creativity.
             </p>
             <div className="space-x-4">
-              <Button size="lg" asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+              <Button size="lg" asChild className="bg-gradient-to-r from-amber-500 to-fuchsia-500 text-white hover:shadow-lg hover:shadow-amber-500/20 transition-all">
                 <Link href="/register">Start Writing for Free</Link>
               </Button>
             </div>
@@ -72,7 +72,7 @@ export default function LandingPage() {
                   <div className={`lg:pr-8 lg:pt-4 ${index % 2 === 1 ? 'lg:order-last' : ''}`}>
                       <div className="lg:max-w-lg">
                           <div className="inline-flex items-center rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                              <feature.icon className="h-5 w-5 mr-2 text-accent" />
+                              <feature.icon className="h-5 w-5 mr-2 text-amber-500" />
                               {feature.title}
                           </div>
                           <p className="mt-8 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{feature.title}</p>
@@ -86,9 +86,9 @@ export default function LandingPage() {
                       src={feature.image.imageUrl}
                       alt={feature.image.description}
                       data-ai-hint={feature.image.imageHint}
-                      className="w-full max-w-none rounded-xl shadow-2xl ring-1 ring-foreground/10 sm:w-[57rem] md:-ml-4 lg:-ml-0 transition-transform duration-500 ease-in-out group-hover:scale-105"
-                      width={800}
-                      height={600}
+                      className="w-full h-auto rounded-xl shadow-2xl ring-1 ring-foreground/10 transition-transform duration-500 ease-in-out group-hover:scale-105"
+                      width={feature.image.width}
+                      height={feature.image.height}
                     />
                   )}
                 </div>
@@ -99,7 +99,7 @@ export default function LandingPage() {
         
         <section id="contact" className="w-full py-20 md:py-32">
          <div className="container px-4 md:px-6">
-            <Card className="bg-gradient-to-r from-primary via-fuchsia-600 to-accent text-primary-foreground overflow-hidden">
+            <Card className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-amber-500 text-primary-foreground overflow-hidden">
               <CardContent className="p-10 md:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-8">
                  <div className="space-y-3 text-center md:text-left">
                   <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Ready to Write Your Masterpiece?</h2>
