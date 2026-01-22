@@ -25,6 +25,7 @@ import {
 import { useAuth } from '@/components/auth-provider';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import { Logo } from '@/components/icons';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }),
@@ -57,9 +58,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-full py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
+    <div className="flex items-center justify-center min-h-screen p-4 bg-background relative overflow-hidden">
+      <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,hsl(var(--foreground)/0.05)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.05)_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 animate-gradient-xy" />
+      
+      <Card className="w-full max-w-md shadow-2xl border-border/50">
+        <CardHeader className="text-center space-y-4">
+          <Logo className="w-12 h-12 text-primary mx-auto" />
           <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
           <CardDescription>
             Sign in to continue to StorySynth
@@ -94,7 +99,7 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Sign In
               </Button>
@@ -102,7 +107,7 @@ export default function LoginPage() {
           </Form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{' '}
-            <Link href="/register" className="underline text-primary">
+            <Link href="/register" className="underline text-primary font-semibold">
               Sign up
             </Link>
           </div>
