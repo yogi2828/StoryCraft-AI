@@ -37,7 +37,7 @@ const formSchema = z.object({
   tone: z.string().min(1, 'Tone is required.'),
   language: z.string().min(1, 'Language is required.'),
   scriptType: z.string().min(1, 'Script type is required.'),
-  characterCount: z.coerce.number().min(1, 'At least 1 character is required.').max(10),
+  characters: z.string().min(10, 'Character descriptions must be at least 10 characters.'),
   plotIdea: z.string().min(10, 'Plot idea must be at least 10 characters.'),
 });
 
@@ -59,7 +59,7 @@ export function GenerateForm() {
       tone: 'Serious',
       language: 'English',
       scriptType: 'Feature Film',
-      characterCount: 2,
+      characters: '',
       plotIdea: '',
     },
   });
@@ -155,38 +155,44 @@ export function GenerateForm() {
                 />
               </div>
 
-              <FormField
-                control={form.control}
-                name="plotIdea"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Plot Idea</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="e.g., A detective on the verge of retirement gets a final case that's mysteriously linked to his past."
-                        className="min-h-[100px]"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                 <FormField
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
                   control={form.control}
-                  name="characterCount"
+                  name="characters"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Characters</FormLabel>
+                      <FormLabel>Characters & Roles</FormLabel>
                       <FormControl>
-                        <Input type="number" min="1" max="10" {...field} />
+                        <Textarea
+                          placeholder="e.g., DETECTIVE MACK (50s, weary but sharp), a rookie cop, a mysterious informant."
+                          className="min-h-[120px]"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="plotIdea"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Plot Idea</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="e.g., A detective on the verge of retirement gets a final case that's mysteriously linked to his past."
+                          className="min-h-[120px]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                  <FormField
                   control={form.control}
                   name="tone"

@@ -16,7 +16,7 @@ const GenerateScreenplaySceneInputSchema = z.object({
   tone: z.string().describe('The tone of the screenplay (e.g., comedic, dramatic).'),
   language: z.string().describe('The language of the screenplay.'),
   scriptType: z.string().describe('The type of script (e.g., movie, TV episode).'),
-  characterCount: z.number().describe('The number of characters in the scene.'),
+  characters: z.string().describe('A description of the characters in the scene, including their names, roles, and personalities.'),
   plotIdea: z.string().describe('A brief plot idea for the scene.'),
 });
 export type GenerateScreenplaySceneInput = z.infer<typeof GenerateScreenplaySceneInputSchema>;
@@ -47,7 +47,7 @@ Genre: {{{genre}}}
 Tone: {{{tone}}}
 Language: {{{language}}}
 Script Type: {{{scriptType}}}
-Character Count: {{{characterCount}}}
+Characters: {{{characters}}}
 Plot Idea: {{{plotIdea}}}
 
 Format the scene with a scene number, location, time of day, description, and dialogue.`,
