@@ -40,9 +40,15 @@ export async function refineScriptFromEdit(input: RefineScriptFromEditInput): Pr
   return refineScriptFromEditFlow(input);
 }
 
+const RefinePromptInputSchema = RefineScriptFromEditInputSchema.extend({
+  editedSceneNumber: z.number(),
+  nextSceneNumber: z.number(),
+});
+
+
 const prompt = ai.definePrompt({
   name: 'refineScriptFromEditPrompt',
-  input: {schema: RefineScriptFromEditInputSchema},
+  input: {schema: RefinePromptInputSchema},
   output: {schema: RefineScriptFromEditOutputSchema},
   prompt: `You are a master screenwriter and script doctor. The user has provided a screenplay and made a manual edit to one of the scenes.
 Your task is to accept the user's edit as the new source of truth and then regenerate ALL subsequent scenes to ensure the story remains logical, creative, and continuous.
@@ -53,8 +59,8 @@ Your task is to accept the user's edit as the new source of truth and then regen
 - Tone: {{{tone}}}
 
 ### Instructions
-1. The user has edited scene number **{{scenes[editedSceneIndex].sceneNumber}}**. The content of this scene in the provided data is the user's final version. Do NOT change it.
-2. Starting from the scene *after* the user's edit (scene number **{{math scenes[editedSceneIndex].sceneNumber '+' 1}}**), you must regenerate the 'description' and 'dialogue' for all following scenes.
+1. The user has edited scene number **{{editedSceneNumber}}**. The content of this scene in the provided data is the user's final version. Do NOT change it.
+2. Starting from the scene *after* the user's edit (scene number **{{nextSceneNumber}}**), you must regenerate the 'description' and 'dialogue' for all following scenes.
 3. The regeneration should creatively and logically follow the new direction set by the user's edit.
 4. For the scenes you regenerate, maintain their original 'location' and 'timeOfDay' unless a change is absolutely necessary for story continuity.
 5. Return ONLY the regenerated 'description' and 'dialogue' for the scenes that follow the edit. The number of objects in your output array must match the number of scenes you were asked to regenerate.
@@ -91,8 +97,19 @@ const refineScriptFromEditFlow = ai.defineFlow(
       // If the last scene was edited, there's nothing to regenerate.
       return { scenes: [] };
     }
+    
+    const editedScene = input.scenes[input.editedSceneIndex];
+    if (!editedScene) {
+      throw new Error(`Edited scene at index ${input.editedSceneIndex} not found.`);
+    }
 
-    const {output} = await prompt(input);
+    const promptData = {
+      ...input,
+      editedSceneNumber: editedScene.sceneNumber,
+      nextSceneNumber: editedScene.sceneNumber + 1,
+    };
+
+    const {output} = await prompt(promptData);
     return output!;
   }
 );
