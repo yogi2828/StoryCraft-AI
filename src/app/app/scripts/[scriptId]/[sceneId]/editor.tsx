@@ -25,10 +25,11 @@ import {
 } from "@/components/ui/select";
 import { useToast } from '@/hooks/use-toast';
 import { getScriptById, updateScene, addScene } from '@/lib/storage';
-import { regenerateSceneAction, improveDialogueAction } from '@/app/actions';
+import { continuityAwareRegenerateSceneAction } from '@/app/actions';
 import { ArrowLeft, Loader2, Save, Sparkles } from 'lucide-react';
 import type { Script, Scene } from '@/lib/types';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required.'),
@@ -49,7 +50,7 @@ export function SceneEditor({ scriptId, sceneId }: { scriptId: string; sceneId: 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
-  const [isImproving, setIsImproving] = useState(false);
+  const [regenerationPrompt, setRegenerationPrompt] = useState('');
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -119,36 +120,46 @@ export function SceneEditor({ scriptId, sceneId }: { scriptId: string; sceneId: 
     }
     setIsSaving(false);
   };
-
-  const handleRegenerate = async () => {
+  
+  const handleContinuityRegenerate = async () => {
     if (!script) return;
     setIsRegenerating(true);
     
-    // Simulate local AI regeneration for demo
-    setTimeout(() => {
-      const currentValues = form.getValues();
-      const regeneratedDescription = `The scene shifts. ${currentValues.description} A sudden chill fills the air, and shadows in the corners of the room seem to deepen and writhe. A single bare lightbulb overhead flickers erratically.`;
-      const regeneratedDialogue = `${currentValues.dialogue}\n\nCHARACTER\n(Whispering)\nSomething's not right. I can feel it.`;
-      
-      form.setValue('description', regeneratedDescription, { shouldValidate: true });
-      form.setValue('dialogue', regeneratedDialogue, { shouldValidate: true });
-      toast({ title: 'Scene Regenerated', description: 'The scene has been updated locally.' });
-      setIsRegenerating(false);
-    }, 1500);
-  };
-  
-  const handleImproveDialogue = async () => {
-    if (!script) return;
-    setIsImproving(true);
+    const currentValues = form.getValues();
+    const sceneIndex = script.scenes.findIndex(s => s.id === sceneId);
     
-    // Simulate local AI dialogue improvement for demo
-    setTimeout(() => {
-      const improvedDialogue = `IMPROVED DIALOGUE:\n\nMARK\n(Leaning in, a conspiratorial whisper)\nThis seat might be taken, but I was hoping you'd make an exception for a fellow writer in distress.\n\nJANE\n(A faint, reluctant smile touches her lips)\nDistress? You look more like you've been in a fight with a hurricane. Don't push your luck.`;
+    if (sceneIndex === -1 && !isNewScene) {
+        toast({ variant: 'destructive', title: 'Error', description: 'Could not find the current scene.' });
+        setIsRegenerating(false);
+        return;
+    }
 
-      form.setValue('dialogue', improvedDialogue, { shouldValidate: true });
-      toast({ title: 'Dialogue Improved', description: 'The dialogue has been refined locally.' });
-      setIsImproving(false);
-    }, 1500);
+    const previousScenesContent = script.scenes
+        .slice(0, sceneIndex)
+        .map(s => `SCENE ${s.sceneNumber}: ${s.location.toUpperCase()}\n${s.description}\n${s.dialogue}`)
+        .join('\n\n---\n\n');
+
+    const result = await continuityAwareRegenerateSceneAction({
+        previousScenes: previousScenesContent,
+        currentScene: {
+            title: currentValues.title,
+            location: currentValues.location,
+            timeOfDay: currentValues.timeOfDay,
+            description: currentValues.description,
+            dialogue: currentValues.dialogue,
+        },
+        editPrompt: regenerationPrompt,
+    });
+
+    if (result.success && result.data) {
+        form.setValue('description', result.data.regeneratedScene.description, { shouldValidate: true });
+        form.setValue('dialogue', result.data.regeneratedScene.dialogue, { shouldValidate: true });
+        toast({ title: 'Scene Regenerated!', description: 'The scene has been updated with AI, maintaining continuity.' });
+    } else {
+        toast({ variant: 'destructive', title: 'AI Error', description: result.error || 'Failed to regenerate scene.' });
+    }
+
+    setIsRegenerating(false);
   };
 
   return (
@@ -162,7 +173,15 @@ export function SceneEditor({ scriptId, sceneId }: { scriptId: string; sceneId: 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <Card>
-              <CardContent className="pt-6 space-y-6">
+              <CardHeader>
+                <CardTitle>{isNewScene ? 'New Scene' : 'Edit Scene'}</CardTitle>
+                <CardDescription>
+                  {isNewScene
+                    ? 'Fill in the details for your new scene.'
+                    : `Editing Scene ${scene?.sceneNumber} of "${script.title}".`}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <FormField
                     control={form.control}
@@ -232,15 +251,7 @@ export function SceneEditor({ scriptId, sceneId }: { scriptId: string; sceneId: 
                   name="dialogue"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="flex justify-between items-center">
-                        Dialogue
-                        {!isNewScene && (
-                        <Button type="button" variant="ghost" size="sm" onClick={handleImproveDialogue} disabled={isImproving}>
-                             {isImproving ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Sparkles className="mr-2 h-4 w-4" />}
-                            Improve with AI
-                        </Button>
-                        )}
-                      </FormLabel>
+                      <FormLabel>Dialogue</FormLabel>
                       <FormControl>
                         <Textarea placeholder={`CHARACTER\n(V.O.)\nI had a bad feeling about this.\n\nOTHER CHARACTER\nTell me something I don't know.`} className="min-h-[250px] font-code" {...field} />
                       </FormControl>
@@ -251,14 +262,36 @@ export function SceneEditor({ scriptId, sceneId }: { scriptId: string; sceneId: 
               </CardContent>
             </Card>
 
-            <div className="flex justify-between items-center">
-              {!isNewScene && (
-              <Button type="button" variant="outline" onClick={handleRegenerate} disabled={isRegenerating}>
-                {isRegenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Sparkles className="mr-2 h-4 w-4" />}
-                Regenerate Scene with AI
-              </Button>
-              )}
-              <div/>
+            {!isNewScene && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>AI Regeneration</CardTitle>
+                  <CardDescription>
+                    Use AI to rewrite this scene. You can provide a prompt for the changes you want, and the AI will consider previous scenes to maintain continuity.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4">
+                    <Label htmlFor="regeneration-prompt">Regeneration Prompt (Optional)</Label>
+                    <Textarea
+                      id="regeneration-prompt"
+                      placeholder="e.g., 'Make the dialogue more tense.' or 'Add a new character who interrupts the conversation.'"
+                      value={regenerationPrompt}
+                      onChange={(e) => setRegenerationPrompt(e.target.value)}
+                      className="font-sans"
+                    />
+                    <div className="flex justify-end">
+                      <Button type="button" onClick={handleContinuityRegenerate} disabled={isRegenerating}>
+                        {isRegenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                        Regenerate with AI
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            <div className="flex justify-end">
               <Button type="submit" size="lg" disabled={isSaving}>
                 {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Save className="mr-2 h-4 w-4" />}
                 {isNewScene ? 'Create Scene' : 'Save Changes'}
