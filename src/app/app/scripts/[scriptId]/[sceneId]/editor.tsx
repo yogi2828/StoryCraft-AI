@@ -138,6 +138,11 @@ export function SceneEditor({ scriptId, sceneId }: { scriptId: string; sceneId: 
         .slice(0, sceneIndex)
         .map(s => `SCENE ${s.sceneNumber}: ${s.location.toUpperCase()}\n${s.description}\n${s.dialogue}`)
         .join('\n\n---\n\n');
+        
+    const subsequentScenesContent = script.scenes
+        .slice(sceneIndex + 1)
+        .map(s => `SCENE ${s.sceneNumber}: ${s.location.toUpperCase()}\n${s.description}\n${s.dialogue}`)
+        .join('\n\n---\n\n');
 
     const result = await continuityAwareRegenerateSceneAction({
         previousScenes: previousScenesContent,
@@ -148,6 +153,7 @@ export function SceneEditor({ scriptId, sceneId }: { scriptId: string; sceneId: 
             description: currentValues.description,
             dialogue: currentValues.dialogue,
         },
+        subsequentScenes: subsequentScenesContent,
         editPrompt: regenerationPrompt,
     });
 

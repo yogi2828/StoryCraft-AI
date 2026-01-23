@@ -4,7 +4,7 @@
  * @fileOverview An AI agent for regenerating screenplay scenes with continuity awareness.
  *
  * - continuityAwareSceneRegeneration - A function that regenerates a scene in a screenplay,
- *   considering previous scenes for context and an optional user prompt for specific edits.
+ *   considering previous and subsequent scenes for context and an optional user prompt for specific edits.
  * - ContinuityAwareSceneRegenerationInput - The input type for the function.
  * - ContinuityAwareSceneRegenerationOutput - The return type for the function.
  */
@@ -21,6 +21,7 @@ const ContinuityAwareSceneRegenerationInputSchema = z.object({
     description: z.string().describe('The current description of the scene.'),
     dialogue: z.string().describe('The current dialogue of the scene.'),
   }),
+  subsequentScenes: z.string().optional().describe('The content of the scenes that follow the current scene for forward-looking continuity.'),
   editPrompt: z.string().optional().describe('An optional prompt from the user specifying desired changes.'),
 });
 
@@ -43,7 +44,7 @@ const prompt = ai.definePrompt({
   name: 'continuityAwareSceneRegenerationPrompt',
   input: {schema: ContinuityAwareSceneRegenerationInputSchema},
   output: {schema: ContinuityAwareSceneRegenerationOutputSchema},
-  prompt: `You are an expert screenwriter. Your task is to regenerate a screenplay scene to improve it, while ensuring it remains consistent with the scenes that came before it. You may also be given a specific prompt to guide the regeneration.
+  prompt: `You are an expert screenwriter. Your task is to regenerate a screenplay scene to improve it, while ensuring it remains consistent with the scenes that came before and after it. You may also be given a specific prompt to guide the regeneration.
 
 ### Previous Scenes Summary
 This is what has happened in the story so far:
@@ -56,6 +57,12 @@ This is what has happened in the story so far:
 - Current Description: {{{currentScene.description}}}
 - Current Dialogue: {{{currentScene.dialogue}}}
 
+{{#if subsequentScenes}}
+### Subsequent Scenes Summary
+This is what happens *after* this scene:
+{{{subsequentScenes}}}
+{{/if}}
+
 {{#if editPrompt}}
 ### User's Edit Request
 The user wants you to apply the following change:
@@ -66,7 +73,7 @@ The user wants you to apply the following change:
 Regenerate the 'Description' and 'Dialogue' for the current scene.
 - Make the description more vivid and the action clearer.
 - Make the dialogue more engaging and natural.
-- **Crucially, ensure the regenerated scene logically follows the "Previous Scenes Summary".**
+- **Crucially, ensure the regenerated scene logically follows the "Previous Scenes Summary" and leads into the "Subsequent Scenes Summary".**
 - If an "User's Edit Request" is provided, prioritize fulfilling that request while maintaining continuity.
 - Output only the regenerated scene content in the specified JSON format.
 `,

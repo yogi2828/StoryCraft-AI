@@ -35,10 +35,15 @@ export function exportScriptToPDF(script: Script) {
   const margin = 20;
   let y = margin;
 
-  y = addWrappedText({ doc, text: script.title, x: 105, maxWidth: 180, y, font: 'times', style: 'bold', size: 24 });
-  y+= 5;
-  doc.text(`By User`, 105, y, { align: 'center' });
-  y += 20;
+  // Title Page
+  doc.setFont('times', 'bold');
+  doc.setFontSize(24);
+  doc.text(script.title, 105, 120, { align: 'center' });
+  doc.setFontSize(14);
+  doc.text(`By ${script.userId}`, 105, 130, { align: 'center' });
+  
+  doc.addPage();
+  y = margin;
 
   script.scenes.forEach(scene => {
     const sceneHeader = `${scene.sceneNumber}. ${scene.location.toUpperCase()} - ${scene.timeOfDay.toUpperCase()}`;
@@ -54,15 +59,25 @@ export function exportScriptToPDF(script: Script) {
     y = addWrappedText({ doc, text: scene.description, x: margin, maxWidth: 170, y, font: 'courier', style: 'normal', size: 12 });
     y += 5;
 
-    // Simple dialogue parsing
-    const dialogueParts = scene.dialogue.split(/\\n/g).filter(line => line.trim() !== '');
-    dialogueParts.forEach(line => {
-      const isCharacter = line.trim().toUpperCase() === line.trim() && !line.includes('(') && line.length < 30;
-      if (isCharacter) {
-        y = addWrappedText({ doc, text: line.trim(), x: 70, maxWidth: 100, y: y+5, font: 'courier', style: 'normal', size: 12 });
-      } else {
-         y = addWrappedText({ doc, text: line.trim(), x: 50, maxWidth: 120, y, font: 'courier', style: 'normal', size: 12 });
-      }
+    // Improved dialogue parsing
+    const dialogueLines = scene.dialogue.split('\n').filter(line => line.trim() !== '');
+    dialogueLines.forEach(line => {
+        line = line.trim();
+        const isCharacter = line.toUpperCase() === line && !line.includes('(') && !/\d/.test(line) && line.length > 1 && line.length < 35;
+        const isParenthetical = line.startsWith('(') && line.endsWith(')');
+
+        if (y > pageHeight - margin) {
+            doc.addPage();
+            y = margin;
+        }
+
+        if (isCharacter) {
+            y = addWrappedText({ doc, text: line, x: 80, maxWidth: 100, y: y + 4, font: 'courier', style: 'normal', size: 12 });
+        } else if (isParenthetical) {
+            y = addWrappedText({ doc, text: line, x: 65, maxWidth: 80, y, font: 'courier', style: 'normal', size: 12 });
+        } else { // Dialogue
+            y = addWrappedText({ doc, text: line, x: 50, maxWidth: 110, y, font: 'courier', style: 'normal', size: 12 });
+        }
     });
 
     y += 15;

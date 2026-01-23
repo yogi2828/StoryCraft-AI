@@ -298,11 +298,11 @@ export function GenerateForm() {
                           <SelectTrigger><SelectValue placeholder="Select number of scenes" /></SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="1">1 Scene</SelectItem>
-                          <SelectItem value="2">2 Scenes</SelectItem>
-                          <SelectItem value="3">3 Scenes</SelectItem>
-                          <SelectItem value="4">4 Scenes</SelectItem>
-                          <SelectItem value="5">5 Scenes</SelectItem>
+                          {[...Array(10)].map((_, i) => (
+                            <SelectItem key={i + 1} value={String(i + 1)}>
+                              {i + 1} Scene{i > 0 ? 's' : ''}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />

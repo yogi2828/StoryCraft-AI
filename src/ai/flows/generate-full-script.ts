@@ -26,7 +26,7 @@ const GenerateFullScriptInputSchema = z.object({
   scriptType: z.string().describe('The type of script (e.g., movie, TV episode).'),
   characters: z.string().describe('A description of the characters in the scene, including their names, roles, and personalities.'),
   plotIdea: z.string().describe('A brief plot idea for the script.'),
-  numberOfScenes: z.number().min(1).max(5).describe('The number of scenes to generate.'),
+  numberOfScenes: z.number().min(1).max(10).describe('The number of scenes to generate.'),
 });
 export type GenerateFullScriptInput = z.infer<typeof GenerateFullScriptInputSchema>;
 

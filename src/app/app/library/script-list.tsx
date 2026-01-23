@@ -11,14 +11,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal, FileDown, Trash2, PlusCircle, Edit } from 'lucide-react';
+import { FileDown, Trash2, PlusCircle, Edit } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -101,12 +95,12 @@ export function ScriptList() {
             <TableHead>Genre</TableHead>
             <TableHead>Scenes</TableHead>
             <TableHead>Last Updated</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="text-right w-[240px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {scripts.map((script) => (
-            <TableRow key={script.id} className="cursor-pointer" onClick={() => router.push(`/app/scripts/${script.id}`)}>
+            <TableRow key={script.id}>
               <TableCell className="font-medium">{script.title}</TableCell>
               <TableCell>{script.genre}</TableCell>
               <TableCell>{script.scenes.length}</TableCell>
@@ -114,50 +108,41 @@ export function ScriptList() {
                 {new Date(script.updatedAt).toLocaleDateString()}
               </TableCell>
               <TableCell className="text-right">
-                <AlertDialog>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0" onClick={(e) => e.stopPropagation()}>
-                        <span className="sr-only">Open menu</span>
-                        <MoreHorizontal className="h-4 w-4" />
+                <div className="flex justify-end items-center gap-2">
+                   <Button variant="outline" size="sm" onClick={() => router.push(`/app/scripts/${script.id}`)}>
+                      <Edit className="mr-2 h-4 w-4" />
+                      Edit
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => handleDownload(script)}>
+                      <FileDown className="mr-2 h-4 w-4" />
+                      PDF
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                        <Trash2 className="h-4 w-4" />
                       </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-                       <DropdownMenuItem onClick={() => router.push(`/app/scripts/${script.id}`)}>
-                        <Edit className="mr-2 h-4 w-4" />
-                        View / Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleDownload(script)}>
-                        <FileDown className="mr-2 h-4 w-4" />
-                        Download PDF
-                      </DropdownMenuItem>
-                      <AlertDialogTrigger asChild>
-                        <DropdownMenuItem className="text-destructive focus:text-destructive">
-                          <Trash2 className="mr-2 h-4 w-4" />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently delete the
+                          script "{script.title}".
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          onClick={() => handleDelete(script.id)}
+                        >
                           Delete
-                        </DropdownMenuItem>
-                      </AlertDialogTrigger>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the
-                        script "{script.title}".
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                        onClick={() => handleDelete(script.id)}
-                      >
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </TableCell>
             </TableRow>
           ))}
