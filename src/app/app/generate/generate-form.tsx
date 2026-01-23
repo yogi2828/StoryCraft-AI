@@ -54,13 +54,13 @@ export function GenerateForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
+      title: 'The Last Stand',
       genre: 'Drama',
       tone: 'Serious',
       language: 'English',
       scriptType: 'Feature Film',
-      characters: '',
-      plotIdea: '',
+      characters: 'DETECTIVE MACK (50s, weary but sharp), a rookie cop, a mysterious informant.',
+      plotIdea: 'A detective on the verge of retirement gets a final case that\'s mysteriously linked to his past.',
     },
   });
 
@@ -69,19 +69,19 @@ export function GenerateForm() {
     setGeneratedScene(null);
     setFormValues(values);
 
-    const result = await generateSceneAction(values);
-
-    if (result.success && result.data) {
-      setGeneratedScene(result.data);
+    // Simulate local AI generation for demo purposes
+    setTimeout(() => {
+      const mockScene: GenerateScreenplaySceneOutput = {
+        sceneNumber: 1,
+        location: 'INT. COFFEE SHOP - DAY',
+        timeOfDay: 'Day',
+        description: 'A bustling coffee shop. Patrons chat and type on laptops. SUNLIGHT streams through the large front window.',
+        dialogue: `JANE (30s, sharp, focused) sips her latte, staring intently at her laptop screen.\n\nMARK (30s, charming, a bit disheveled) approaches her table.\n\nMARK\nIs this seat taken?\n\nJane looks up, annoyed.\n\nJANE\nIt is now.`,
+      };
+      setGeneratedScene(mockScene);
       toast({ title: 'Scene Generated!', description: 'Your new scene is ready below.' });
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Generation Failed',
-        description: result.error,
-      });
-    }
-    setIsLoading(false);
+      setIsLoading(false);
+    }, 1500);
   }
   
   function handleSaveScript() {
@@ -103,7 +103,7 @@ export function GenerateForm() {
         tone: formValues.tone,
         language: formValues.language,
         scriptType: formValues.scriptType,
-        aiModelUsed: 'llama3:latest',
+        aiModelUsed: 'Local Demo',
     }, [newSceneForStorage]);
 
     toast({ title: 'Script Saved!', description: 'Your new script is in the library.' });

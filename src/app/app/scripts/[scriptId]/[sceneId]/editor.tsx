@@ -123,46 +123,32 @@ export function SceneEditor({ scriptId, sceneId }: { scriptId: string; sceneId: 
   const handleRegenerate = async () => {
     if (!script) return;
     setIsRegenerating(true);
-    const currentValues = form.getValues();
-    const result = await regenerateSceneAction({
-      ...currentValues,
-      genre: script.genre,
-      tone: script.tone,
-      scriptType: script.scriptType,
-    });
     
-    if (result.success && result.data) {
-        form.setValue('description', result.data.regeneratedScene.description, { shouldValidate: true });
-        form.setValue('dialogue', result.data.regeneratedScene.dialogue, { shouldValidate: true });
-        toast({ title: 'Scene Regenerated', description: 'The scene has been updated with AI.' });
-    } else {
-        toast({ variant: 'destructive', title: 'Regeneration Failed', description: result.error });
-    }
-    setIsRegenerating(false);
+    // Simulate local AI regeneration for demo
+    setTimeout(() => {
+      const currentValues = form.getValues();
+      const regeneratedDescription = `The scene shifts. ${currentValues.description} A sudden chill fills the air, and shadows in the corners of the room seem to deepen and writhe. A single bare lightbulb overhead flickers erratically.`;
+      const regeneratedDialogue = `${currentValues.dialogue}\n\nCHARACTER\n(Whispering)\nSomething's not right. I can feel it.`;
+      
+      form.setValue('description', regeneratedDescription, { shouldValidate: true });
+      form.setValue('dialogue', regeneratedDialogue, { shouldValidate: true });
+      toast({ title: 'Scene Regenerated', description: 'The scene has been updated locally.' });
+      setIsRegenerating(false);
+    }, 1500);
   };
   
   const handleImproveDialogue = async () => {
     if (!script) return;
     setIsImproving(true);
-    const currentValues = form.getValues();
-    // A simple way to get previous scenes for context
-    const previousScenesContent = script.scenes
-      .filter(s => s.sceneNumber < (scene?.sceneNumber || 0))
-      .map(s => `Scene ${s.sceneNumber}:\n${s.description}\n${s.dialogue}`)
-      .join('\n\n---\n\n');
-
-    const result = await improveDialogueAction({
-        currentSceneDialogue: currentValues.dialogue,
-        previousScenes: previousScenesContent || "This is the first scene.",
-    });
     
-    if (result.success && result.data) {
-        form.setValue('dialogue', result.data.improvedDialogue, { shouldValidate: true });
-        toast({ title: 'Dialogue Improved', description: 'The dialogue has been refined by AI.' });
-    } else {
-        toast({ variant: 'destructive', title: 'Improvement Failed', description: result.error });
-    }
-    setIsImproving(false);
+    // Simulate local AI dialogue improvement for demo
+    setTimeout(() => {
+      const improvedDialogue = `IMPROVED DIALOGUE:\n\nMARK\n(Leaning in, a conspiratorial whisper)\nThis seat might be taken, but I was hoping you'd make an exception for a fellow writer in distress.\n\nJANE\n(A faint, reluctant smile touches her lips)\nDistress? You look more like you've been in a fight with a hurricane. Don't push your luck.`;
+
+      form.setValue('dialogue', improvedDialogue, { shouldValidate: true });
+      toast({ title: 'Dialogue Improved', description: 'The dialogue has been refined locally.' });
+      setIsImproving(false);
+    }, 1500);
   };
 
   return (
