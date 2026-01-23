@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -26,13 +25,13 @@ import {
 } from "@/components/ui/select";
 import { useToast } from '@/hooks/use-toast';
 import { generateFullScriptAction } from '@/app/actions';
-import { Loader2, Sparkles, Save, FileDown } from 'lucide-react';
-import { useAuth } from '@/components/auth-provider';
-import { saveScript } from '@/lib/storage';
+import { Loader2, Sparkles } from 'lucide-react';
 import type { GenerateFullScriptOutput } from '@/ai/flows/generate-full-script';
-import { Separator } from '@/components/ui/separator';
-import { exportScriptToPDF } from '@/lib/pdf';
-import type { Script } from '@/lib/types';
+import { ScriptEditor } from '@/components/script-editor';
+import { saveScript } from '@/lib/storage';
+import { useAuth } from '@/components/auth-provider';
+import { useRouter } from 'next/navigation';
+import type { Script, Scene } from '@/lib/types';
 
 
 const formSchema = z.object({
@@ -43,7 +42,7 @@ const formSchema = z.object({
   scriptType: z.string().min(1, 'Script type is required.'),
   characters: z.string().min(10, 'Character descriptions must be at least 10 characters.'),
   plotIdea: z.string().min(10, 'Plot idea must be at least 10 characters.'),
-  numberOfScenes: z.coerce.number().min(1, 'You must generate at least one scene.'),
+  numberOfScenes: z.coerce.number().min(1, 'You must generate at least one scene.').max(10, 'You can generate a maximum of 10 scenes at a time.'),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -53,7 +52,7 @@ export function GenerateForm() {
   const { toast } = useToast();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [generatedScript, setGeneratedScript] = useState<GenerateFullScriptOutput | null>(null);
+  const [generatedScript, setGeneratedScript] = useState<Script | null>(null);
   const [formValues, setFormValues] = useState<FormValues | null>(null);
 
   const form = useForm<FormValues>({
@@ -77,9 +76,31 @@ export function GenerateForm() {
 
     const result = await generateFullScriptAction(values);
 
-    if (result.success && result.data?.scenes) {
-        setGeneratedScript(result.data);
-        toast({ title: 'Script Generated!', description: `Your new script with ${result.data.scenes.length} scenes is ready below.` });
+    if (result.success && result.data?.scenes && user) {
+        const scriptForEditor: Script = {
+          id: `temp-${crypto.randomUUID()}`,
+          userId: user.id,
+          title: values.title,
+          genre: values.genre,
+          tone: values.tone,
+          language: values.language,
+          scriptType: values.scriptType,
+          status: 'draft',
+          aiModelUsed: 'Gemini',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          scenes: result.data.scenes.map((scene, index) => ({
+            ...scene,
+            id: `temp-scene-${index}`,
+            scriptId: `temp-${crypto.randomUUID()}`,
+            title: `Scene ${scene.sceneNumber}`,
+            aiGenerated: true,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          }))
+        };
+        setGeneratedScript(scriptForEditor);
+        toast({ title: 'Script Generated!', description: `Your new script with ${result.data.scenes.length} scenes is ready for editing below.` });
     } else {
         toast({ variant: 'destructive', title: 'AI Error', description: result.error || 'Failed to generate script.' });
     }
@@ -87,61 +108,23 @@ export function GenerateForm() {
     setIsLoading(false);
   }
   
-  function handleSaveScript() {
-    if (!generatedScript || !formValues || !user) return;
+  function handleSaveScript(finalScript: Script) {
+    if (!user) return;
     
-    const newScenesForStorage = generatedScript.scenes.map(scene => ({
-        title: `Scene ${scene.sceneNumber}`,
-        location: scene.location,
-        timeOfDay: scene.timeOfDay,
-        description: scene.description,
-        dialogue: scene.dialogue,
-        aiGenerated: true,
-    }));
-
+    // The scenes in finalScript are already what we want to save
     const newScript = saveScript({
         userId: user.id,
-        title: formValues.title,
-        genre: formValues.genre,
-        tone: formValues.tone,
-        language: formValues.language,
-        scriptType: formValues.scriptType,
+        title: finalScript.title,
+        genre: finalScript.genre,
+        tone: finalScript.tone,
+        language: finalScript.language,
+        scriptType: finalScript.scriptType,
         aiModelUsed: 'Gemini',
-    }, newScenesForStorage);
+    }, finalScript.scenes);
 
     toast({ title: 'Script Saved!', description: 'Your new script is in the library.' });
     router.push(`/app/scripts/${newScript.id}`);
   }
-
-  function handleDownloadPdf() {
-    if (!generatedScript || !formValues || !user) return;
-
-    const tempScript: Script = {
-      id: 'temp-script',
-      userId: user.id,
-      title: formValues.title,
-      genre: formValues.genre,
-      tone: formValues.tone,
-      language: formValues.language,
-      scriptType: formValues.scriptType,
-      aiModelUsed: 'Gemini',
-      status: 'draft',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      scenes: generatedScript.scenes.map(scene => ({
-        ...scene,
-        id: `temp-scene-${scene.sceneNumber}`,
-        scriptId: 'temp-script',
-        title: `Scene ${scene.sceneNumber}`,
-        aiGenerated: true,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      })),
-    };
-
-    exportScriptToPDF(tempScript);
-  }
-
 
   return (
     <>
@@ -333,32 +316,15 @@ export function GenerateForm() {
         </div>
       )}
 
-      {generatedScript && generatedScript.scenes.length > 0 && (
-        <Card className="mt-8">
-            <CardContent className="pt-6 space-y-4">
-                 <div className="flex justify-between items-center">
-                    <h3 className="text-2xl font-semibold">Generated Script</h3>
-                    <div className="flex gap-2">
-                      <Button variant="outline" onClick={handleDownloadPdf}>
-                          <FileDown className="mr-2 h-4 w-4" /> Download PDF
-                      </Button>
-                      <Button onClick={handleSaveScript}>
-                          <Save className="mr-2 h-4 w-4" /> Save Script
-                      </Button>
-                    </div>
-                </div>
-                <div className="p-4 border rounded-lg bg-background/50 space-y-8 font-code">
-                  {generatedScript.scenes.map((scene, index) => (
-                      <div key={index} className="space-y-4">
-                          <p className="font-bold uppercase">{scene.sceneNumber}. {scene.location} - {scene.timeOfDay}</p>
-                          <p className="whitespace-pre-wrap">{scene.description}</p>
-                          <p className="whitespace-pre-wrap">{scene.dialogue}</p>
-                          {index < generatedScript.scenes.length - 1 && <Separator className="my-6" />}
-                      </div>
-                    ))}
-                </div>
-            </CardContent>
-        </Card>
+      {generatedScript && (
+        <div className="mt-8">
+            <ScriptEditor
+              key={generatedScript.id}
+              initialScript={generatedScript}
+              onSave={handleSaveScript}
+              isNewScript={true}
+            />
+        </div>
       )}
     </>
   );
