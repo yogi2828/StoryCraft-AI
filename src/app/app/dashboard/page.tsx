@@ -73,11 +73,11 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-4 text-center">
               <div>
-                <p className="text-3xl font-bold">{isLoading ? <Skeleton className="h-8 w-12 mx-auto" /> : scripts.length}</p>
+                <div className="text-3xl font-bold">{isLoading ? <Skeleton className="h-8 w-12 mx-auto" /> : scripts.length}</div>
                 <p className="text-sm text-muted-foreground">Total Scripts</p>
               </div>
               <div>
-                <p className="text-3xl font-bold">{isLoading ? <Skeleton className="h-8 w-12 mx-auto" /> : scripts.reduce((acc, s) => acc + s.scenes.length, 0)}</p>
+                <div className="text-3xl font-bold">{isLoading ? <Skeleton className="h-8 w-12 mx-auto" /> : scripts.reduce((acc, s) => acc + s.scenes.length, 0)}</div>
                 <p className="text-sm text-muted-foreground">Total Scenes</p>
               </div>
             </CardContent>
