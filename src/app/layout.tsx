@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/components/auth-provider';
 import { ThemeProvider } from '@/components/theme-provider';
+import { CinematicBackground } from '@/components/cinematic-background';
 
 export const metadata: Metadata = {
   title: 'StorySynth',
@@ -27,7 +28,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          'min-h-screen bg-background font-body antialiased',
+          'min-h-screen bg-background font-body antialiased overflow-x-hidden',
         )}
       >
         <ThemeProvider
@@ -37,6 +38,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
+            <CinematicBackground />
             {children}
             <Toaster />
           </AuthProvider>
