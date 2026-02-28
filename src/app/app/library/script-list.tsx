@@ -34,10 +34,12 @@ import { Card } from '@/components/ui/card';
 export function ScriptList() {
   const [scripts, setScripts] = useState<Script[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
   useEffect(() => {
+    setMounted(true);
     setScripts(getScripts());
     setIsLoading(false);
   }, []);
@@ -105,7 +107,7 @@ export function ScriptList() {
               <TableCell>{script.genre}</TableCell>
               <TableCell>{script.scenes.length}</TableCell>
               <TableCell>
-                {new Date(script.updatedAt).toLocaleDateString()}
+                {mounted ? new Date(script.updatedAt).toLocaleDateString() : '...'}
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end items-center gap-2">

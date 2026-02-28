@@ -1,7 +1,16 @@
+'use client';
+
 import Link from 'next/link';
 import { Logo } from '@/components/icons';
+import { useState, useEffect } from 'react';
 
 export function Footer() {
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="bg-muted/50 text-muted-foreground border-t">
       <div className="container mx-auto grid grid-cols-1 gap-8 px-4 py-12 md:grid-cols-3 md:px-6">
@@ -46,7 +55,7 @@ export function Footer() {
       </div>
       <div className="border-t py-4">
         <div className="container mx-auto flex items-center justify-between px-4 text-xs md:px-6">
-          <p>&copy; {new Date().getFullYear()} StoryCraft AI. Crafting stories for the silver screen.</p>
+          <p>&copy; {year || '...'} StoryCraft AI. Crafting stories for the silver screen.</p>
         </div>
       </div>
     </footer>

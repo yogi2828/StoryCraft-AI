@@ -15,8 +15,10 @@ export default function DashboardPage() {
   const { user, isLoading: isAuthLoading } = useAuth();
   const [scripts, setScripts] = useState<Script[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     if (!isAuthLoading) {
       setScripts(getScripts());
       setIsLoading(false);
@@ -65,16 +67,16 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-6">
              <div className="flex items-center justify-between p-4 rounded-xl bg-secondary/30">
-                <span className="text-sm text-muted-foreground uppercase tracking-widest font-bold">Scripts</span>
-                <span className="text-3xl font-bold text-accent">
+                <div className="text-sm text-muted-foreground uppercase tracking-widest font-bold">Scripts</div>
+                <div className="text-3xl font-bold text-accent">
                    {isLoading ? <Skeleton className="h-8 w-10" /> : scripts.length}
-                </span>
+                </div>
              </div>
              <div className="flex items-center justify-between p-4 rounded-xl bg-secondary/30">
-                <span className="text-sm text-muted-foreground uppercase tracking-widest font-bold">Total Scenes</span>
-                <span className="text-3xl font-bold text-accent">
+                <div className="text-sm text-muted-foreground uppercase tracking-widest font-bold">Total Scenes</div>
+                <div className="text-3xl font-bold text-accent">
                    {isLoading ? <Skeleton className="h-8 w-10" /> : scripts.reduce((acc, s) => acc + s.scenes.length, 0)}
-                </span>
+                </div>
              </div>
           </CardContent>
         </Card>
@@ -108,7 +110,7 @@ export default function DashboardPage() {
                     <CardDescription>{script.scenes.length} professional scenes</CardDescription>
                   </CardHeader>
                   <CardContent className="pt-4 border-t border-white/5 flex justify-between items-center text-xs text-muted-foreground">
-                    <span>Updated {new Date(script.updatedAt).toLocaleDateString()}</span>
+                    <span>Updated {mounted ? new Date(script.updatedAt).toLocaleDateString() : '...'}</span>
                     <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </CardContent>
                 </Card>

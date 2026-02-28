@@ -15,10 +15,12 @@ import { ScriptEditor } from '@/components/script-editor';
 export function SceneList({ scriptId }: { scriptId: string }) {
   const [script, setScript] = useState<Script | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
   useEffect(() => {
+    setMounted(true);
     const foundScript = getScriptById(scriptId);
     if (foundScript) {
       setScript(foundScript);
@@ -67,7 +69,7 @@ export function SceneList({ scriptId }: { scriptId: string }) {
                 <div>
                   <CardTitle className="text-3xl">{script.title}</CardTitle>
                   <CardDescription className="mt-1">
-                    Last updated on {new Date(script.updatedAt).toLocaleDateString()}
+                    Last updated on {mounted ? new Date(script.updatedAt).toLocaleDateString() : '...'}
                   </CardDescription>
                 </div>
                 <div className="flex flex-shrink-0 gap-2">
