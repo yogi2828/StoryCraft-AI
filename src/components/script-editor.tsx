@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import type { Script, Scene } from '@/lib/types';
+import { useState, useEffect } from 'react';
+import type { Script } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Loader2, Save, Sparkles, FileDown, AlertTriangle } from 'lucide-react';
+import { Loader2, Save, Sparkles, FileDown, AlertCircle, Trash2 } from 'lucide-react';
 import { refineScriptAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { exportScriptToPDF } from '@/lib/pdf';
@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
 
 interface ScriptEditorProps {
   initialScript: Script;
@@ -54,8 +55,8 @@ export function ScriptEditor({ initialScript, onSave, isNewScript = false }: Scr
     if (editedSceneIndexes.size === 0) {
       toast({
         variant: 'destructive',
-        title: 'No changes detected',
-        description: 'Please edit a scene before refining with AI.',
+        title: 'No Changes',
+        description: 'Edit at least one scene before refining continuity.',
       });
       return;
     }
@@ -83,14 +84,14 @@ export function ScriptEditor({ initialScript, onSave, isNewScript = false }: Scr
       setScript({ ...script, scenes: updatedScenes });
       setEditedSceneIndexes(new Set());
       toast({
-        title: 'Script Refined!',
-        description: 'Subsequent scenes have been updated by the AI to maintain continuity.',
+        title: 'Continuity Restored',
+        description: 'AI has adjusted subsequent scenes to match your edits.',
       });
     } else {
       toast({
         variant: 'destructive',
-        title: 'AI Refinement Failed',
-        description: result.error || 'An unknown error occurred.',
+        title: 'Refinement Error',
+        description: result.error || 'Failed to align the story.',
       });
     }
 
@@ -105,112 +106,121 @@ export function ScriptEditor({ initialScript, onSave, isNewScript = false }: Scr
 
   const handleDownload = () => {
     exportScriptToPDF(script);
+    toast({ title: 'PDF Prepared', description: 'Your export has started.' });
   }
-  
+
   const hasEdits = editedSceneIndexes.size > 0;
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-          <div>
-            <CardTitle>{isNewScript ? "Edit & Refine Your New Script" : "Script Editor"}</CardTitle>
-            <CardDescription>
-              {isNewScript 
-                ? "Your generated script is below. Make any edits, then use the AI to refine it."
-                : "Edit your scenes directly. Use the AI to automatically adjust for continuity."
-              }
-            </CardDescription>
-          </div>
-          <div className="flex flex-shrink-0 gap-2">
-            <Button onClick={handleDownload} variant="outline">
-              <FileDown className="mr-2 h-4 w-4" /> Download PDF
-            </Button>
-             <Button onClick={handleSaveChanges} disabled={isSaving || isRefining}>
-              {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-              Save
-            </Button>
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass p-6 rounded-2xl">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">{script.title}</h2>
+          <div className="flex gap-2 mt-2">
+            <Badge variant="secondary">{script.genre}</Badge>
+            <Badge variant="secondary">{script.tone}</Badge>
+            <Badge variant="outline">{script.scriptType}</Badge>
           </div>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <Card className="bg-background/50">
-           <CardHeader className="flex-row items-center justify-between">
-              <div className="space-y-1">
-                <CardTitle className="text-xl">AI Continuity Refinement</CardTitle>
-                <CardDescription>
-                    After editing a scene, let the AI automatically rewrite subsequent scenes to match.
-                </CardDescription>
-              </div>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                     <Button disabled={!hasEdits || isRefining}>
-                        {isRefining ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                        Refine with AI
-                      </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Confirm AI Refinement</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This will send your script to the AI. It will use your latest edit as a reference and may <span className="font-bold">overwrite all subsequent scenes</span> to ensure story continuity. This action cannot be undone.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleRefineScript}>Continue</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-           </CardHeader>
-           {hasEdits && (
-            <CardContent>
-                <div className="flex items-center gap-3 text-sm p-3 rounded-lg border border-yellow-500/50 bg-yellow-500/10 text-yellow-200">
-                    <AlertTriangle className="h-5 w-5 text-yellow-400" />
-                    You have unsaved AI refinements. Click &quot;Refine with AI&quot; to apply continuity changes.
-                </div>
-            </CardContent>
-           )}
-        </Card>
+        <div className="flex items-center gap-3">
+          <Button onClick={handleDownload} variant="outline" className="rounded-full">
+            <FileDown className="mr-2 h-4 w-4" /> Export PDF
+          </Button>
+          <Button onClick={handleSaveChanges} disabled={isSaving || isRefining} className="rounded-full px-8">
+            {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+            Save
+          </Button>
+        </div>
+      </div>
 
-        <Accordion type="multiple" defaultValue={['scene-0']} className="w-full space-y-4">
-          {script.scenes.map((scene, index) => (
-            <AccordionItem value={`scene-${index}`} key={scene.id || index} className="border-b-0">
-               <Card className="overflow-hidden">
-                <AccordionTrigger className="flex items-center justify-between w-full p-4 hover:no-underline hover:bg-muted/50 data-[state=open]:bg-muted/50 [&[data-state=open]>svg]:rotate-180">
-                  <div className="flex items-center gap-4">
-                     {editedSceneIndexes.has(index) && <div className="w-2 h-2 rounded-full bg-accent" title="Edited"></div>}
-                    <h3 className="font-semibold text-lg">{scene.sceneNumber}. {scene.title}</h3>
-                    <p className="text-sm text-muted-foreground">{scene.location} - {scene.timeOfDay}</p>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="p-6 pt-2 space-y-4">
-                    <div>
-                      <Label htmlFor={`description-${index}`} className="font-semibold">Description</Label>
-                      <Textarea
-                        id={`description-${index}`}
-                        value={scene.description}
-                        onChange={(e) => handleContentChange(index, 'description', e.target.value)}
-                        className="mt-2 min-h-[150px] font-code"
-                      />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-4">
+          <Accordion type="multiple" defaultValue={['scene-0']} className="space-y-4">
+            {script.scenes.map((scene, index) => (
+              <AccordionItem value={`scene-${index}`} key={scene.id || index} className="border-none">
+                <Card className={`overflow-hidden transition-all duration-300 ${editedSceneIndexes.has(index) ? 'border-primary ring-1 ring-primary/20' : 'border-border/50'}`}>
+                  <AccordionTrigger className="flex items-center justify-between w-full p-4 hover:no-underline hover:bg-muted/50 data-[state=open]:bg-muted/30">
+                    <div className="flex items-center gap-4 text-left">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${editedSceneIndexes.has(index) ? 'bg-primary text-white' : 'bg-muted text-muted-foreground'}`}>
+                        {scene.sceneNumber}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold">{scene.location || 'UNTITLED LOCATION'}</h3>
+                        <p className="text-xs text-muted-foreground uppercase tracking-widest">{scene.timeOfDay}</p>
+                      </div>
                     </div>
-                    <div>
-                      <Label htmlFor={`dialogue-${index}`} className="font-semibold">Dialogue</Label>
-                      <Textarea
-                        id={`dialogue-${index}`}
-                        value={scene.dialogue}
-                        onChange={(e) => handleContentChange(index, 'dialogue', e.target.value)}
-                        className="mt-2 min-h-[200px] font-code"
-                      />
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="p-6 pt-2 space-y-6">
+                      <div className="space-y-2">
+                        <Label className="text-xs uppercase tracking-tighter text-muted-foreground">Action & Description</Label>
+                        <Textarea
+                          value={scene.description}
+                          onChange={(e) => handleContentChange(index, 'description', e.target.value)}
+                          className="min-h-[120px] font-mono leading-relaxed bg-muted/20 border-none focus-visible:ring-1"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-xs uppercase tracking-tighter text-muted-foreground">Dialogue</Label>
+                        <Textarea
+                          value={scene.dialogue}
+                          onChange={(e) => handleContentChange(index, 'dialogue', e.target.value)}
+                          className="min-h-[200px] font-mono leading-relaxed bg-muted/20 border-none focus-visible:ring-1"
+                        />
+                      </div>
                     </div>
-                  </div>
-                </AccordionContent>
-               </Card>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </CardContent>
-    </Card>
+                  </AccordionContent>
+                </Card>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+
+        <div className="space-y-6">
+          <Card className="sticky top-24 border-accent/20 bg-accent/5">
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-accent" />
+                Continuity Engine
+              </CardTitle>
+              <CardDescription>
+                Manual edits can break story flow. Use AI to re-align the script from your last edit.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {hasEdits ? (
+                <div className="p-4 rounded-xl bg-accent/10 border border-accent/20 flex items-start gap-3 text-sm">
+                  <AlertCircle className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                  <p>Changes detected in scene(s): {Array.from(editedSceneIndexes).map(i => i + 1).join(', ')}. Refining will update all scenes that follow.</p>
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground italic">No manual edits detected yet.</p>
+              )}
+              
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={!hasEdits || isRefining}>
+                    {isRefining ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                    Refine Script Continuity
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Apply AI Refinement?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      The AI will analyze your edits and rewrite all subsequent scenes to match the new story direction. This cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleRefineScript} className="bg-accent text-accent-foreground">Confirm Refinement</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 }
