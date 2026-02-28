@@ -27,7 +27,7 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
           <Logo className="h-8 w-8 text-primary" />
           <span className="font-headline text-xl font-bold text-foreground">
-            StorySynth
+            StoryCraft AI
           </span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
@@ -58,7 +58,7 @@ export function Header() {
           <Button variant="ghost" asChild>
             <Link href="/login">Login</Link>
           </Button>
-          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full">
             <Link href="/register">Start Writing</Link>
           </Button>
         </div>

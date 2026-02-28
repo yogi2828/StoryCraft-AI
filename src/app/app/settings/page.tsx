@@ -9,7 +9,7 @@ export default function SettingsPage() {
       <div className="max-w-2xl mx-auto space-y-8">
         <header>
           <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-          <p className="text-muted-foreground">Customize your StorySynth experience.</p>
+          <p className="text-muted-foreground">Customize your StoryCraft AI experience.</p>
         </header>
 
         <Card>

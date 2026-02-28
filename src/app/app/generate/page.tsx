@@ -2,7 +2,7 @@ import { GenerateForm } from './generate-form';
 import { BotMessageSquare, Sparkles } from 'lucide-react';
 
 export const metadata = {
-  title: 'Generate Script | StorySynth',
+  title: 'Generate Script | StoryCraft AI',
   description: 'Generate a new screenplay using AI.',
 };
 

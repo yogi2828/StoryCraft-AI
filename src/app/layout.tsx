@@ -7,7 +7,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { CinematicBackground } from '@/components/cinematic-background';
 
 export const metadata: Metadata = {
-  title: 'StorySynth',
+  title: 'StoryCraft AI',
   description: 'AI-Powered Screenplay & Story Creation Platform',
 };
 

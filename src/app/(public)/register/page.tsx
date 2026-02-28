@@ -72,7 +72,7 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-2xl border-border/50">
         <CardHeader className="text-center space-y-4">
           <Logo className="w-12 h-12 text-primary mx-auto" />
-          <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
+          <CardTitle className="text-2xl font-bold">Create an Account ✨</CardTitle>
           <CardDescription>
             Start your screenwriting journey today.
           </CardDescription>

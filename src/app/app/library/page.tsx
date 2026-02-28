@@ -2,7 +2,7 @@ import { Library } from 'lucide-react';
 import { ScriptList } from './script-list';
 
 export const metadata = {
-  title: 'Script Library | StorySynth',
+  title: 'Script Library | StoryCraft AI',
   description: 'View and manage your saved scripts.',
 };
 
