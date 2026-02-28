@@ -122,42 +122,42 @@ export function GenerateForm() {
   }
 
   return (
-    <div className="space-y-12">
-      <Card className="border-primary/10 shadow-2xl shadow-primary/5">
-        <CardHeader>
-          <CardTitle className="text-2xl flex items-center gap-2">
-            <Wand2 className="w-6 h-6 text-primary" />
+    <div className="space-y-8">
+      <Card className="border-primary/10 shadow-xl shadow-primary/5 rounded-2xl">
+        <CardHeader className="p-6 pb-4">
+          <CardTitle className="text-xl flex items-center gap-2">
+            <Wand2 className="w-5 h-5 text-primary" />
             Script Blueprint
           </CardTitle>
-          <CardDescription>Provide the foundation, and let AI build the scenes.</CardDescription>
+          <CardDescription className="text-sm">Provide the foundation, and let AI build the scenes.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6 pt-2">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel className="text-xs uppercase tracking-wider font-bold text-muted-foreground">Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Midnight in Kyoto" {...field} className="text-lg font-medium" />
+                      <Input placeholder="e.g., Midnight in Kyoto" {...field} className="text-base font-medium h-11" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <FormField
                   control={form.control}
                   name="genre"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Genre</FormLabel>
+                      <FormLabel className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">Genre</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectTrigger className="h-10 text-xs"><SelectValue /></SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="Drama">Drama</SelectItem>
@@ -175,10 +175,10 @@ export function GenerateForm() {
                   name="tone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tone</FormLabel>
+                      <FormLabel className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">Tone</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectTrigger className="h-10 text-xs"><SelectValue /></SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="Serious">Serious</SelectItem>
@@ -195,10 +195,10 @@ export function GenerateForm() {
                   name="scriptType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Format</FormLabel>
+                      <FormLabel className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">Format</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectTrigger className="h-10 text-xs"><SelectValue /></SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="Feature Film">Feature Film</SelectItem>
@@ -214,10 +214,10 @@ export function GenerateForm() {
                   name="numberOfScenes"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Scenes to Generate</FormLabel>
+                      <FormLabel className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">Scenes</FormLabel>
                       <Select onValueChange={(v) => field.onChange(parseInt(v))} defaultValue={String(field.value)}>
                         <FormControl>
-                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectTrigger className="h-10 text-xs"><SelectValue /></SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           {[1,2,3,4,5,6,7,8,9,10].map(n => (
@@ -230,17 +230,17 @@ export function GenerateForm() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="characters"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Character Dossier</FormLabel>
+                      <FormLabel className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">Character Dossier</FormLabel>
                       <FormControl>
                         <Textarea 
                           placeholder="Introduce your protagonists, antagonists, and their key traits..." 
-                          className="min-h-[150px] resize-none"
+                          className="min-h-[120px] resize-none text-sm"
                           {...field} 
                         />
                       </FormControl>
@@ -253,11 +253,11 @@ export function GenerateForm() {
                   name="plotIdea"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Plot Summary</FormLabel>
+                      <FormLabel className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">Plot Summary</FormLabel>
                       <FormControl>
                         <Textarea 
                           placeholder="What is the central conflict or spark of this script?" 
-                          className="min-h-[150px] resize-none"
+                          className="min-h-[120px] resize-none text-sm"
                           {...field} 
                         />
                       </FormControl>
@@ -267,16 +267,16 @@ export function GenerateForm() {
                 />
               </div>
 
-              <div className="flex justify-end pt-4 border-t">
-                <Button type="submit" size="lg" disabled={isLoading} className="px-12 rounded-full">
+              <div className="flex justify-end pt-2 border-t border-foreground/5">
+                <Button type="submit" size="lg" disabled={isLoading} className="px-10 rounded-full h-11 text-sm font-bold shadow-md">
                   {isLoading ? (
                     <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Manifesting...
                     </>
                   ) : (
                     <>
-                      <Sparkles className="mr-2 h-5 w-5" />
+                      <Sparkles className="mr-2 h-4 w-4" />
                       Ignite Generation
                     </>
                   )}
