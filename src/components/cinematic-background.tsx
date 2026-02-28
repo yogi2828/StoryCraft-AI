@@ -14,48 +14,48 @@ export function CinematicBackground() {
 
   return (
     <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none select-none bg-background transition-colors duration-1000">
-      {/* Cinematic Layered Gradients */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_20%,hsl(var(--primary)/0.15)_0%,transparent_50%)]" />
-      <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_80%,hsl(var(--accent)/0.1)_0%,transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,hsl(var(--background))_130%)]" />
+      {/* Gradients */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_20%,hsl(var(--primary)/0.1)_0%,transparent_50%)]" />
+      <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_80%,hsl(var(--accent)/0.05)_0%,transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,hsl(var(--background))_120%)]" />
 
-      {/* Floating Glowing Aura Bubbles */}
-      <div className="absolute top-[10%] left-[15%] w-[30rem] h-[30rem] bg-primary/10 rounded-full blur-[120px] animate-bubble" />
-      <div className="absolute top-[50%] left-[75%] w-[40rem] h-[40rem] bg-accent/5 rounded-full blur-[150px] animate-bubble [animation-delay:6s]" />
-      <div className="absolute bottom-[5%] left-[25%] w-[35rem] h-[35rem] bg-primary/5 rounded-full blur-[120px] animate-bubble [animation-delay:12s]" />
+      {/* Floating Bubbles */}
+      <div className="absolute top-[15%] left-[10%] w-[20rem] h-[20rem] bg-primary/5 rounded-full blur-[100px] animate-bubble" />
+      <div className="absolute top-[60%] left-[80%] w-[25rem] h-[25rem] bg-accent/5 rounded-full blur-[120px] animate-bubble [animation-delay:4s]" />
+      <div className="absolute bottom-[10%] left-[30%] w-[20rem] h-[20rem] bg-primary/3 rounded-full blur-[100px] animate-bubble [animation-delay:8s]" />
 
-      {/* Drifting Geometric Shards */}
-      <div className="absolute top-[15%] left-[8%] animate-float opacity-[0.03] scale-[2]">
-        <Square className="w-64 h-64 text-accent rotate-12" />
+      {/* Geometric Shards */}
+      <div className="absolute top-[20%] left-[5%] animate-float opacity-[0.02] scale-[1.5]">
+        <Square className="w-48 h-48 text-accent rotate-12" />
       </div>
-      <div className="absolute top-[70%] left-[80%] animate-float-slow opacity-[0.02] scale-[2.5]">
-        <Square className="w-96 h-96 text-primary -rotate-45" />
-      </div>
-
-      {/* Cinematic Icons with Refined Motion */}
-      <div className="absolute top-[25%] left-[12%] animate-float opacity-[0.08] dark:opacity-[0.06]">
-        <Camera className="w-12 h-12 text-primary" />
-      </div>
-      <div className="absolute top-[60%] right-[10%] animate-float-slow opacity-[0.07] dark:opacity-[0.05]">
-        <Film className="w-16 h-16 text-accent" />
-      </div>
-      <div className="absolute bottom-[25%] left-[20%] animate-float opacity-[0.06] dark:opacity-[0.04]">
-        <Clapperboard className="w-10 h-10 text-primary" />
-      </div>
-      <div className="absolute top-[40%] left-[45%] animate-pulse opacity-[0.08] dark:opacity-[0.06]">
-        <Sparkles className="w-8 h-8 text-accent" />
-      </div>
-      <div className="absolute bottom-[20%] right-[20%] animate-float-slow opacity-[0.07] dark:opacity-[0.05]">
-        <Video className="w-14 h-14 text-primary" />
+      <div className="absolute top-[75%] left-[85%] animate-float opacity-[0.015] scale-[2]">
+        <Square className="w-64 h-64 text-primary -rotate-45" />
       </div>
 
-      {/* Light Shards Layer */}
-      <div className="absolute -inset-[20%] opacity-[0.05] dark:opacity-[0.03] pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] bg-[length:300%_300%] animate-drift" />
+      {/* Icons */}
+      <div className="absolute top-[30%] left-[15%] animate-float opacity-[0.05] dark:opacity-[0.04]">
+        <Camera className="w-8 h-8 text-primary" />
+      </div>
+      <div className="absolute top-[65%] right-[15%] animate-float opacity-[0.04] dark:opacity-[0.03] [animation-delay:2s]">
+        <Film className="w-10 h-10 text-accent" />
+      </div>
+      <div className="absolute bottom-[30%] left-[25%] animate-float opacity-[0.03] dark:opacity-[0.02] [animation-delay:4s]">
+        <Clapperboard className="w-6 h-6 text-primary" />
+      </div>
+      <div className="absolute top-[45%] left-[50%] animate-pulse opacity-[0.05] dark:opacity-[0.04]">
+        <Sparkles className="w-5 h-5 text-accent" />
+      </div>
+      <div className="absolute bottom-[25%] right-[25%] animate-float opacity-[0.04] dark:opacity-[0.03] [animation-delay:6s]">
+        <Video className="w-9 h-9 text-primary" />
       </div>
 
-      {/* Film Grain Texture */}
-      <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.015] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      {/* Light Drift */}
+      <div className="absolute -inset-[10%] opacity-[0.03] dark:opacity-[0.02] pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:200%_200%] animate-drift" />
+      </div>
+
+      {/* Grain */}
+      <div className="absolute inset-0 opacity-[0.01] dark:opacity-[0.01] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
     </div>
   );
 }

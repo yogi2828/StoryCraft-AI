@@ -23,7 +23,7 @@
     --border: 220 13% 91%;
     --input: 220 13% 91%;
     --ring: 263 70% 50%;
-    --radius: 2rem;
+    --radius: 1rem;
 
     --sidebar-background: 226 40% 97%;
     --sidebar-foreground: 224 71% 4%;
@@ -78,51 +78,45 @@
 
 @layer utilities {
   .glass {
-    @apply bg-background/40 backdrop-blur-3xl border border-foreground/5;
+    @apply bg-background/40 backdrop-blur-xl border border-foreground/5;
   }
   .amber-glow {
-    box-shadow: 0 0 40px -10px hsl(var(--accent) / 0.4);
+    box-shadow: 0 0 30px -5px hsl(var(--accent) / 0.3);
   }
   .primary-glow {
-    box-shadow: 0 0 40px -10px hsl(var(--primary) / 0.4);
+    box-shadow: 0 0 30px -5px hsl(var(--primary) / 0.3);
   }
 }
 
 @keyframes float {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(40px, -60px) rotate(5deg); }
-  66% { transform: translate(-40px, 40px) rotate(-5deg); }
+  50% { transform: translate(20px, -30px) rotate(3deg); }
 }
 
 @keyframes bubble {
   0%, 100% { transform: translateY(0) scale(1); opacity: 0.1; }
-  50% { transform: translateY(-150px) scale(1.4); opacity: 0.4; }
+  50% { transform: translateY(-100px) scale(1.2); opacity: 0.3; }
 }
 
 @keyframes drift {
-  from { transform: translateX(-20%) translateY(0); }
-  to { transform: translateX(120%) translateY(-40%); }
+  from { transform: translateX(-10%) translateY(0); }
+  to { transform: translateX(110%) translateY(-20%); }
 }
 
 .animate-float {
-  animation: float 25s ease-in-out infinite;
-}
-
-.animate-float-slow {
-  animation: float 45s ease-in-out infinite;
+  animation: float 20s ease-in-out infinite;
 }
 
 .animate-bubble {
-  animation: bubble 20s ease-in-out infinite;
+  animation: bubble 15s ease-in-out infinite;
 }
 
 .animate-drift {
-  animation: drift 150s linear infinite;
+  animation: drift 100s linear infinite;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
   @apply bg-background;
