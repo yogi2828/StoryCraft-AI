@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/form';
 import { useAuth } from '@/components/auth-provider';
 import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, User, Mail, Lock } from 'lucide-react';
 import { Logo } from '@/components/icons';
 
 const formSchema = z
@@ -65,30 +65,32 @@ export default function RegisterPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4 bg-background relative overflow-hidden animate-in fade-in duration-1000">
-      <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,hsl(var(--foreground)/0.03)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.03)_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,hsl(var(--foreground)/0.03)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.03)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
 
-      <Card className="w-full max-w-md shadow-3xl border-white/5 glass rounded-[2.5rem] overflow-hidden">
-        <div className="h-2 bg-gradient-to-r from-accent via-primary to-accent w-full animate-drift" />
-        <CardHeader className="text-center space-y-4 p-10">
-          <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto shadow-xl shadow-primary/10 mb-2">
-            <Logo className="w-10 h-10 text-primary" />
+      <Card className="w-full max-w-2xl shadow-3xl border-foreground/5 glass rounded-[4rem] overflow-hidden">
+        <div className="h-2.5 bg-gradient-to-r from-accent via-primary to-accent w-full animate-drift" />
+        <CardHeader className="text-center space-y-6 p-14 pb-10">
+          <div className="w-24 h-24 rounded-[2.5rem] bg-primary/10 flex items-center justify-center mx-auto shadow-2xl shadow-primary/5 mb-2">
+            <Logo className="w-14 h-14 text-primary" />
           </div>
-          <CardTitle className="text-3xl font-black text-white/90 uppercase tracking-tight">Create Account ✨</CardTitle>
-          <CardDescription className="text-muted-foreground font-medium text-lg italic">
+          <CardTitle className="text-5xl font-black text-foreground uppercase tracking-tight leading-none text-center">Create Account ✨</CardTitle>
+          <CardDescription className="text-muted-foreground font-medium text-xl italic text-center">
             Start your screenwriting journey today.
           </CardDescription>
         </CardHeader>
-        <CardContent className="p-10 pt-0">
+        <CardContent className="p-14 pt-0">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <FormField
                 control={form.control}
                 name="username"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[10px] uppercase tracking-[0.4em] font-black text-accent/70 ml-1">Username</FormLabel>
+                  <FormItem className="md:col-span-2">
+                    <FormLabel className="text-[10px] uppercase tracking-[0.5em] font-black text-primary/70 ml-2 flex items-center gap-2">
+                       <User className="w-3 h-3" /> Username
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="your_username" {...field} className="bg-white/5 border-none focus-visible:ring-1 focus-visible:ring-accent/40 rounded-2xl h-11 transition-all px-4" />
+                      <Input placeholder="your_username" {...field} className="bg-foreground/5 border-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-[2rem] h-16 transition-all px-8 text-lg" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -98,10 +100,12 @@ export default function RegisterPage() {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[10px] uppercase tracking-[0.4em] font-black text-accent/70 ml-1">Email</FormLabel>
+                  <FormItem className="md:col-span-2">
+                    <FormLabel className="text-[10px] uppercase tracking-[0.5em] font-black text-primary/70 ml-2 flex items-center gap-2">
+                       <Mail className="w-3 h-3" /> Email
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="name@example.com" {...field} className="bg-white/5 border-none focus-visible:ring-1 focus-visible:ring-accent/40 rounded-2xl h-11 transition-all px-4" />
+                      <Input placeholder="name@example.com" {...field} className="bg-foreground/5 border-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-[2rem] h-16 transition-all px-8 text-lg" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -112,9 +116,11 @@ export default function RegisterPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[10px] uppercase tracking-[0.4em] font-black text-accent/70 ml-1">Password</FormLabel>
+                    <FormLabel className="text-[10px] uppercase tracking-[0.5em] font-black text-primary/70 ml-2 flex items-center gap-2">
+                       <Lock className="w-3 h-3" /> Password
+                    </FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} className="bg-white/5 border-none focus-visible:ring-1 focus-visible:ring-accent/40 rounded-2xl h-11 transition-all px-4" />
+                      <Input type="password" placeholder="••••••••" {...field} className="bg-foreground/5 border-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-[2rem] h-16 transition-all px-8 text-lg" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -125,23 +131,25 @@ export default function RegisterPage() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[10px] uppercase tracking-[0.4em] font-black text-accent/70 ml-1">Confirm Password</FormLabel>
+                    <FormLabel className="text-[10px] uppercase tracking-[0.5em] font-black text-primary/70 ml-2 flex items-center gap-2">
+                       <Lock className="w-3 h-3" /> Confirm
+                    </FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} className="bg-white/5 border-none focus-visible:ring-1 focus-visible:ring-accent/40 rounded-2xl h-11 transition-all px-4" />
+                      <Input type="password" placeholder="••••••••" {...field} className="bg-foreground/5 border-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-[2rem] h-16 transition-all px-8 text-lg" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 rounded-full h-14 font-black text-lg amber-glow transition-all active:scale-95 shadow-2xl mt-4" disabled={isLoading}>
-                 {isLoading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
+              <Button type="submit" className="md:col-span-2 w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-full h-20 font-black text-2xl shadow-3xl transition-all active:scale-95 mt-4" disabled={isLoading}>
+                 {isLoading && <Loader2 className="mr-3 h-6 w-6 animate-spin" />}
                 Sign Up
               </Button>
             </form>
           </Form>
-          <div className="mt-8 text-center text-sm font-medium">
+          <div className="mt-12 text-center text-lg font-medium">
             <span className="text-muted-foreground">Already have an account?</span>{' '}
-            <Link href="/login" className="underline text-accent font-black hover:text-accent/80 transition-colors ml-1">
+            <Link href="/login" className="underline text-primary font-black hover:text-primary/80 transition-colors ml-2">
               Sign in
             </Link>
           </div>
