@@ -1,0 +1,44 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-cinematic",
+      "description": "A high-end cinematic film set with bright studio lights and a camera crane.",
+      "imageUrl": "https://images.unsplash.com/photo-1485846234645-a62644f84728?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmaWxtJTIwc2V0fGVufDB8fHx8MTc2OTExMTI0Mnww&ixlib=rb-4.1.0&q=80&w=1200",
+      "width": 1200,
+      "height": 800,
+      "imageHint": "film set"
+    },
+    {
+      "id": "feature-weave",
+      "description": "Abstract glowing lines representing narrative threads connecting together.",
+      "imageUrl": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGxpbmVzfGVufDB8fHx8MTc2OTExMTI0Mnww&ixlib=rb-4.1.0&q=80&w=800",
+      "width": 800,
+      "height": 600,
+      "imageHint": "abstract connection"
+    },
+    {
+      "id": "feature-continuity",
+      "description": "A professional screenplay page with a film reel in the background.",
+      "imageUrl": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmaWxtJTIwcmVlbHxlbnwwfHx8fDE3NjkxMTEyNDJ8MA&ixlib=rb-4.1.0&q=80&w=800",
+      "width": 800,
+      "height": 600,
+      "imageHint": "film reel"
+    },
+    {
+      "id": "feature-ready",
+      "description": "A crisp stack of screenplay pages bound with brass fasteners.",
+      "imageUrl": "https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwYXBlciUyMHN0YWNrfGVufDB8fHx8MTc2OTExMTI0Mnww&ixlib=rb-4.1.0&q=80&w=800",
+      "width": 800,
+      "height": 600,
+      "imageHint": "script paper"
+    },
+    {
+      "id": "gen-header-deco",
+      "description": "Close up of a professional film camera lens.",
+      "imageUrl": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjYW1lcmElMjBsZW5zfGVufDB8fHx8MTc2OTExMTI0Mnww&ixlib=rb-4.1.0&q=80&w=600",
+      "width": 600,
+      "height": 400,
+      "imageHint": "camera lens"
+    }
+  ]
+}

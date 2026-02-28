@@ -7,27 +7,29 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Sparkles, ArrowRight, Play, ScrollText } from 'lucide-react';
 
 export default function LandingPage() {
+  const heroImage = PlaceHolderImages.find(img => img.id === 'hero-cinematic');
+  
   const features = [
     {
       id: 'generate',
       icon: AIGenerateIcon,
       title: 'AI Script Weaver',
       description: 'Craft complex narratives from a single spark. Our AI understands character arcs and dramatic beats to generate scenes that feel alive.',
-      image: PlaceHolderImages.find(img => img.id === 'feature-generate'),
+      image: PlaceHolderImages.find(img => img.id === 'feature-weave'),
     },
     {
       id: 'edit',
       icon: SceneEditIcon,
       title: 'Fluid Continuity Engine',
       description: 'Edit any scene and watch as the story intelligently adjusts. Maintain perfect narrative flow across every act with one click.',
-      image: PlaceHolderImages.find(img => img.id === 'feature-edit'),
+      image: PlaceHolderImages.find(img => img.id === 'feature-continuity'),
     },
     {
       id: 'export',
       icon: PDFExportIcon,
       title: 'Industry Ready Export',
       description: 'Format your masterpiece instantly. Export to PDF with professional screenplay standards ready for the production office.',
-      image: PlaceHolderImages.find(img => img.id === 'feature-export'),
+      image: PlaceHolderImages.find(img => img.id === 'feature-ready'),
     },
   ];
 
@@ -63,6 +65,19 @@ export default function LandingPage() {
             </div>
           </div>
           
+          {/* Hero Decorative Image */}
+          {heroImage && (
+            <div className="absolute top-[40%] left-1/2 -translate-x-1/2 w-[120%] h-full -z-10 opacity-20 blur-3xl scale-110 pointer-events-none">
+                <Image
+                  src={heroImage.imageUrl}
+                  alt={heroImage.description}
+                  fill
+                  className="object-cover"
+                  data-ai-hint={heroImage.imageHint}
+                />
+            </div>
+          )}
+
           {/* Decorative Scroll Icon */}
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-40">
              <ScrollText className="w-6 h-6" />
@@ -81,7 +96,7 @@ export default function LandingPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {features.map((feature, index) => (
-                <Card key={feature.id} className="bg-card/50 border-white/5 hover:border-accent/30 transition-all duration-500 group overflow-hidden">
+                <Card key={feature.id} className="bg-card/50 border-white/5 hover:border-accent/30 transition-all duration-500 group overflow-hidden rounded-[2rem]">
                   <CardContent className="p-8 space-y-6">
                     <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform duration-500">
                       <feature.icon className="w-6 h-6" />
@@ -91,13 +106,13 @@ export default function LandingPage() {
                       {feature.description}
                     </p>
                     {feature.image && (
-                       <div className="pt-4 opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
+                       <div className="pt-4 relative overflow-hidden rounded-2xl aspect-video grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
                          <Image
                           src={feature.image.imageUrl}
                           alt={feature.image.description}
-                          className="rounded-xl object-cover h-40 w-full"
-                          width={400}
-                          height={200}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          data-ai-hint={feature.image.imageHint}
                         />
                        </div>
                     )}
