@@ -1,6 +1,6 @@
 'use client';
 
-import { Camera, Film, Square, Clapperboard, Video } from 'lucide-react';
+import { Camera, Film, Clapperboard, Video, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export function CinematicBackground() {
@@ -13,21 +13,49 @@ export function CinematicBackground() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none opacity-20 dark:opacity-30">
-      {/* Moving Squares */}
-      <Square className="absolute top-[10%] left-[5%] w-12 h-12 text-primary animate-float opacity-20" />
-      <Square className="absolute bottom-[20%] right-[10%] w-24 h-24 text-accent animate-float-reverse opacity-10" />
-      <Square className="absolute top-[60%] left-[15%] w-8 h-8 text-primary animate-float opacity-30" />
+    <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none select-none">
+      {/* Dynamic Gradients */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_20%,hsl(var(--primary)/0.15)_0%,transparent_50%)]" />
+      <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_80%,hsl(var(--accent)/0.1)_0%,transparent_50%)]" />
       
-      {/* Movie Icons */}
-      <Camera className="absolute top-[25%] right-[20%] w-16 h-16 text-accent animate-float-reverse opacity-20" />
-      <Film className="absolute bottom-[15%] left-[25%] w-20 h-20 text-primary animate-float opacity-15" />
-      <Clapperboard className="absolute top-[70%] right-[30%] w-14 h-14 text-accent animate-float opacity-25" />
-      <Video className="absolute bottom-[40%] right-[5%] w-10 h-10 text-primary animate-float-reverse opacity-20" />
-      
-      {/* Decorative Gradients */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[120px] rounded-full animate-pulse-slow" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[120px] rounded-full animate-pulse-slow" />
+      {/* Floating Elements */}
+      <div className="absolute top-[15%] left-[10%] animate-float opacity-10">
+        <Camera className="w-24 h-24 text-primary" />
+      </div>
+      <div className="absolute top-[60%] right-[15%] animate-float-reverse opacity-10">
+        <Film className="w-32 h-32 text-accent" />
+      </div>
+      <div className="absolute bottom-[20%] left-[20%] animate-float opacity-10">
+        <Clapperboard className="w-20 h-20 text-primary" />
+      </div>
+      <div className="absolute top-[40%] left-[45%] animate-pulse-slow opacity-10">
+        <Sparkles className="w-16 h-16 text-accent" />
+      </div>
+      <div className="absolute bottom-[10%] right-[30%] animate-float-reverse opacity-10">
+        <Video className="w-28 h-28 text-primary" />
+      </div>
+
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--foreground)/0.03)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
     </div>
   );
+}
+
+// Global Animations for floating
+const style = typeof document !== 'undefined' ? document.createElement('style') : null;
+if (style) {
+  style.innerHTML = `
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+    @keyframes float-reverse {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(20px) rotate(-5deg); }
+    }
+    .animate-float { animation: float 10s ease-in-out infinite; }
+    .animate-float-reverse { animation: float-reverse 12s ease-in-out infinite; }
+    .animate-pulse-slow { animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+  `;
+  document.head.appendChild(style);
 }

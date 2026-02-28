@@ -4,128 +4,125 @@ import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { AIGenerateIcon, SceneEditIcon, PDFExportIcon } from '@/components/icons';
 import { Card, CardContent } from '@/components/ui/card';
-import { Sparkles, ArrowRight, Play } from 'lucide-react';
+import { Sparkles, ArrowRight, Play, ScrollText } from 'lucide-react';
 
 export default function LandingPage() {
   const features = [
     {
       id: 'generate',
       icon: AIGenerateIcon,
-      title: 'AI-Powered Generation',
-      description: 'Instantly generate complete screenplay scenes from a simple plot idea. Let our advanced AI handle the heavy lifting, from dialogue to descriptions, so you can focus on the story.',
+      title: 'AI Script Weaver',
+      description: 'Craft complex narratives from a single spark. Our AI understands character arcs and dramatic beats to generate scenes that feel alive.',
       image: PlaceHolderImages.find(img => img.id === 'feature-generate'),
     },
     {
       id: 'edit',
       icon: SceneEditIcon,
-      title: 'Deep Scene Editing',
-      description: 'Take full control. Edit every detail of your scene, from dialogue to description, or let our AI regenerate it for you with a single click. Refine your vision effortlessly.',
+      title: 'Fluid Continuity Engine',
+      description: 'Edit any scene and watch as the story intelligently adjusts. Maintain perfect narrative flow across every act with one click.',
       image: PlaceHolderImages.find(img => img.id === 'feature-edit'),
     },
     {
       id: 'export',
       icon: PDFExportIcon,
-      title: 'Professional Export',
-      description: 'Download your scripts and scenes as professionally formatted PDFs, ready for sharing with your team, submitting to festivals, or printing for table reads.',
+      title: 'Industry Ready Export',
+      description: 'Format your masterpiece instantly. Export to PDF with professional screenplay standards ready for the production office.',
       image: PlaceHolderImages.find(img => img.id === 'feature-export'),
     },
   ];
 
   return (
-    <div className="flex flex-col min-h-[100dvh]">
+    <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        <section className="relative w-full pt-32 pb-20 md:pt-48 md:pb-32 lg:pt-56 lg:pb-40 flex items-center justify-center text-center overflow-hidden">
-          <div className="container relative px-4 md:px-6 space-y-8 animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4 animate-bounce">
+        {/* Hero Section */}
+        <section className="relative w-full pt-32 pb-20 md:pt-48 md:pb-32 flex flex-col items-center text-center px-4 overflow-hidden">
+          <div className="container relative z-10 space-y-8 max-w-5xl">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border-accent/20 text-accent text-sm font-medium animate-fade-in-up">
               <Sparkles className="w-4 h-4" />
-              <span>Next-Gen Screenwriting is Here</span>
+              <span>The Future of Screenwriting</span>
             </div>
-            <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-br from-foreground to-foreground/60 bg-clip-text text-transparent drop-shadow-sm">
-              From Idea to Screenplay.
-              <br/>
-              <span className="bg-gradient-to-r from-amber-500 via-accent to-fuchsia-500 bg-clip-text text-transparent">Instantly.</span>
+            
+            <h1 className="text-5xl font-bold tracking-tight sm:text-7xl lg:text-8xl animate-fade-in-up [animation-delay:200ms]">
+              Your Vision. <br/>
+              <span className="text-accent italic">Our Intelligence.</span>
             </h1>
-            <p className="mx-auto max-w-[700px] text-lg text-muted-foreground md:text-xl drop-shadow-lg leading-relaxed">
-              StorySynth is the world's most advanced AI-powered platform for creators to draft, manage, and export professional movie scripts.
+            
+            <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-xl leading-relaxed animate-fade-in-up [animation-delay:400ms]">
+              StoryCraft AI is the premium workbench for modern creators. Draft, refine, and export professional screenplays with AI that understands the soul of your story.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-              <Button size="lg" asChild className="bg-gradient-to-r from-amber-500 to-fuchsia-500 text-white hover:shadow-2xl hover:shadow-amber-500/40 transition-all rounded-full px-8 h-14 text-lg">
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6 animate-fade-in-up [animation-delay:600ms]">
+              <Button size="lg" asChild className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full px-10 h-14 text-lg font-bold shadow-2xl shadow-accent/20">
                 <Link href="/register">
-                  Start Writing <ArrowRight className="ml-2 w-5 h-5" />
+                  Start Writing Free <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full px-8 h-14 text-lg border-foreground/10 hover:bg-foreground/5">
-                <Play className="mr-2 w-4 h-4 fill-current" /> Watch Demo
+              <Button size="lg" variant="ghost" className="rounded-full px-8 h-14 text-lg text-foreground hover:bg-white/5">
+                <Play className="mr-2 w-5 h-5 fill-current" /> Watch Showreel
               </Button>
             </div>
           </div>
+          
+          {/* Decorative Scroll Icon */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-40">
+             <ScrollText className="w-6 h-6" />
+          </div>
         </section>
 
-        <section id="features" className="w-full py-24 md:py-32 lg:py-40">
+        {/* Features Section */}
+        <section id="features" className="w-full py-24 md:py-32 bg-secondary/20 relative">
           <div className="container px-4 md:px-6 mx-auto">
-             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-20">
-                <div className="inline-block rounded-lg bg-primary/10 border border-primary/20 px-3 py-1 text-sm text-primary">Core Modules</div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">The Script Doctor's Toolkit</h2>
-                <p className="max-w-[800px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Everything you need to go from a blank page to a finished draft in record time.
+            <div className="flex flex-col items-center text-center space-y-4 mb-24">
+                <h2 className="text-3xl font-bold tracking-tight sm:text-5xl text-foreground">A Writer's Arsenal</h2>
+                <p className="max-w-[700px] text-muted-foreground text-lg">
+                  Powerful tools designed to vanish into your workflow, leaving only your creativity.
                 </p>
             </div>
 
-            <div className="space-y-32">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {features.map((feature, index) => (
-                <div key={feature.id} className="group mx-auto grid max-w-2xl grid-cols-1 items-center gap-x-16 gap-y-10 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-                  <div className={`lg:pr-8 lg:pt-4 ${index % 2 === 1 ? 'lg:order-last' : ''}`}>
-                      <div className="lg:max-w-lg">
-                          <div className="inline-flex items-center rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                              <feature.icon className="h-5 w-5 mr-2 text-amber-500" />
-                              {feature.title}
-                          </div>
-                          <h3 className="mt-8 text-3xl font-bold tracking-tight text-foreground sm:text-4xl leading-tight">{feature.title}</h3>
-                          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                            {feature.description}
-                          </p>
-                          <Button variant="link" className="mt-6 p-0 h-auto text-primary text-lg">
-                            Learn more <ArrowRight className="ml-2 w-4 h-4" />
-                          </Button>
-                      </div>
-                  </div>
-                  {feature.image && (
-                    <div className="relative group">
-                       <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-accent/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                       <Image
-                        src={feature.image.imageUrl}
-                        alt={feature.image.description}
-                        data-ai-hint={feature.image.imageHint}
-                        className="relative w-full h-auto rounded-2xl shadow-2xl ring-1 ring-foreground/10 transition-transform duration-700 ease-in-out group-hover:scale-[1.02]"
-                        width={feature.image.width}
-                        height={feature.image.height}
-                      />
+                <Card key={feature.id} className="bg-card/50 border-white/5 hover:border-accent/30 transition-all duration-500 group overflow-hidden">
+                  <CardContent className="p-8 space-y-6">
+                    <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform duration-500">
+                      <feature.icon className="w-6 h-6" />
                     </div>
-                  )}
-                </div>
+                    <h3 className="text-2xl font-bold text-foreground">{feature.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {feature.description}
+                    </p>
+                    {feature.image && (
+                       <div className="pt-4 opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700">
+                         <Image
+                          src={feature.image.imageUrl}
+                          alt={feature.image.description}
+                          className="rounded-xl object-cover h-40 w-full"
+                          width={400}
+                          height={200}
+                        />
+                       </div>
+                    )}
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
         </section>
         
-        <section id="contact" className="w-full py-20 md:py-32">
-         <div className="container px-4 md:px-6">
-            <Card className="bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-950 text-primary-foreground overflow-hidden border-primary/20 relative">
-              <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,hsl(var(--foreground)/0.03)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.03)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-              <CardContent className="p-10 md:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-                 <div className="space-y-4 text-center md:text-left">
-                  <h2 className="text-3xl font-bold tracking-tighter md:text-5xl bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">Ready to Write Your Masterpiece?</h2>
-                  <p className="mx-auto max-w-[600px] opacity-70 md:text-xl/relaxed">
-                    Join thousands of writers and bring your stories to life today.
+        {/* Call to Action */}
+        <section className="w-full py-32">
+          <div className="container px-4 md:px-6 mx-auto">
+            <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-primary to-background p-12 md:p-24 text-center border border-white/10">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(var(--accent)/0.05)_0%,transparent_70%)]" />
+               <div className="relative z-10 space-y-8">
+                  <h2 className="text-4xl md:text-6xl font-bold tracking-tight">The blank page is history.</h2>
+                  <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                    Join a new generation of screenwriters and bring your scripts to life today.
                   </p>
-                </div>
-                <div className="flex-shrink-0">
-                   <Button size="lg" asChild className="bg-amber-500 text-black hover:bg-amber-400 w-full sm:w-auto h-14 px-10 rounded-full text-lg font-bold shadow-xl shadow-amber-500/20">
-                    <Link href="/register">Sign Up Now</Link>
+                  <Button size="lg" asChild className="bg-white text-primary hover:bg-white/90 rounded-full px-12 h-16 text-xl font-bold">
+                    <Link href="/register">Join StoryCraft</Link>
                   </Button>
-                </div>
-              </CardContent>
-            </Card>
+               </div>
+            </div>
           </div>
         </section>
       </main>
